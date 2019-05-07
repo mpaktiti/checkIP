@@ -1,0 +1,4 @@
+# ignore data files, backups, and node_modules
+/blocklist-ipsets/*
+/backup/*
+/node_modules/*
