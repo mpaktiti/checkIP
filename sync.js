@@ -1,8 +1,9 @@
 /* eslint-disable no-console */
 const fs = require('fs');
 const db = require('./queries');
+const config = require('./config.json');
 
-const filesDir = 'blocklist-ipsets';
+const { filesDir } = config;
 
 // filter out the files I need to read and process
 function isDataFile(filename) {
@@ -24,5 +25,5 @@ fs.readdir(filesDir, (err, files) => {
   ipArray = [].concat.apply([], ipArray).filter(n => n); // flatten array
   const distinctIP = [...new Set(ipArray)];
   console.log(`Start importing ${distinctIP.length} IPs`);
-  db.syncData(distinctIP);
+  //db.syncData(distinctIP);
 });
