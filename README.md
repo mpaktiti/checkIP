@@ -31,7 +31,7 @@ SET default_with_oids = false;
 
 CREATE TABLE public.ip (
     ip inet NOT NULL,
-    source character varying(50),
+    source character varying,
     last_upd timestamp without time zone
 );
 
@@ -58,7 +58,7 @@ As a temporary workaround, create also that table, using the following script. I
 ```sql
 CREATE TABLE public.ip_inet (
     ip inet NOT NULL,
-    source character varying(50),
+    source character varying,
     last_upd timestamp without time zone
 );
 
