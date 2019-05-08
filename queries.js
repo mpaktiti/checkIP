@@ -31,9 +31,9 @@ const syncData = (ipArray) => {
     try {
       await client.query('BEGIN');
       await client.query('TRUNCATE ip_inet');
-      for (const ip of ipArray) {
+      for (let i = 0; i < ipArray.length; i++) {
         insertText = 'INSERT INTO ip_inet (ip, source, last_upd) VALUES ($1, $2, $3) ON CONFLICT DO NOTHING';
-        insertValues = [ip, 'dummy-source', now];
+        insertValues = [ipArray[i][0], ipArray[i][1], now];
         await client.query(insertText, insertValues);
       }
       await client.query('COMMIT');
