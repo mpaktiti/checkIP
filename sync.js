@@ -25,5 +25,5 @@ fs.readdir(filesDir, (err, files) => {
   ipArray = [].concat.apply([], ipArray).filter(n => n); // flatten array
   const distinctIP = [...new Set(ipArray)];
   console.log(`Start importing ${distinctIP.length} IPs`);
-  //db.syncData(distinctIP);
+  db.syncData(distinctIP);
 });

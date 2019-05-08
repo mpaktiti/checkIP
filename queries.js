@@ -10,6 +10,8 @@ const pool = new Pool({
   port: config.port
 });
 
+const now = new Date();
+
 const checkIP = (request, response) => {
   console.time('checkIP');
   const { ip } = request.params;
@@ -30,8 +32,8 @@ const syncData = (ipArray) => {
       await client.query('BEGIN');
       await client.query('TRUNCATE ip_inet');
       for (const ip of ipArray) {
-        insertText = 'INSERT INTO ip_inet (ip, source) VALUES ($1, $2) ON CONFLICT DO NOTHING';
-        insertValues = [ip, 'dummy-source'];
+        insertText = 'INSERT INTO ip_inet (ip, source, last_upd) VALUES ($1, $2, $3) ON CONFLICT DO NOTHING';
+        insertValues = [ip, 'dummy-source', now];
         await client.query(insertText, insertValues);
       }
       await client.query('COMMIT');
