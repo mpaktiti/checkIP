@@ -28,7 +28,6 @@ fs.readdir(filesDir, (err, files) => {
   console.time('groupBy');
   const result = utils.groupBy(ipArray, item => [item.ip]);
   console.timeEnd('groupBy');
-  console.log(result);
 
   console.time('mergeIPSources');
   const resultArray = utils.mergeIPSources(result, []);
