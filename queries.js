@@ -13,15 +13,13 @@ const pool = new Pool({
 const now = new Date();
 
 const checkIP = (request, response) => {
-  console.time('checkIP');
   const { ip } = request.params;
   pool.query('SELECT * FROM ip WHERE ip >>= $1', [ip], (error, results) => {
     if (error) {
       return response.status(400).send(error.message);
     }
-    response.status(200).json(results.rows);
+    return (results.rowCount === 0 ? response.status(200).send('OK') : response.status(200).json(results.rows));
   });
-  console.timeEnd('checkIP');
 };
 
 const syncData = (ipArray) => {
