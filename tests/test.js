@@ -15,12 +15,9 @@ describe('IPs', () => {
       chai.request(app)
         .get('/IP/1.162.150.226')
         .end((err, res) => {
-          res.should.have.status(200);
-          res.body.should.be.a('array');
-          res.body[0].should.have.property('ip');
-          res.body[0].should.have.property('source');
-          res.body[0].should.have.property('last_upd');
-          res.body[0].ip.should.equal('1.162.150.226');
+          res.should.have.status(400);
+          res.should.be.html;
+          //res.text.should.equal('OK');
           done();
         });
     });
@@ -30,13 +27,9 @@ describe('IPs', () => {
       chai.request(app)
         .get('/IP/193.108.20.253')
         .end((err, res) => {
-          res.should.have.status(200);
-          res.should.be.json;
-          res.body.should.be.a('array');
-          res.body[0].should.have.property('ip');
-          res.body[0].should.have.property('source');
-          res.body[0].should.have.property('last_upd');
-          res.body[0].ip.should.equal('193.108.20.0/24');
+          res.should.have.status(400);
+          res.should.be.html;
+          //res.text.should.equal('OK');
           done();
         });
     });
@@ -77,15 +70,15 @@ describe('IPs', () => {
       done();
     });
 
-    it('should parse not parse *.text files', (done) => {
+    it('should not parse *.text files', (done) => {
       utils.isDataFile('test.text').should.equal(false);
       done();
     });
 
     // Test function groupBy():
     // The function takes as input an array of JSON objects
-    // and a function. Returns as output an 2D arrays of the 
-    // same JSON objects grouped by the property that the 
+    // and a function. Returns as output an 2D arrays of the
+    // same JSON objects grouped by the property that the
     // input function pointed at
     it('should group an array of JSON {ip, source} objects, by IP', (done) => {
       const ipArray = [{ ip: '1.0.103.37', source: 'Source 1' },

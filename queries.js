@@ -18,7 +18,10 @@ const checkIP = (request, response) => {
     if (error) {
       return response.status(400).send(error.message);
     }
-    return (results.rowCount === 0 ? response.status(200).send('OK') : response.status(200).json(results.rows));
+    return (results.rowCount === 0 ? 
+      response.status(200).send('OK') : 
+      response.status(400).send(`IP ${ip} is blacklisted by ${results.rows[0].source}`)
+    );
   });
 };
 
