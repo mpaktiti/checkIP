@@ -17,7 +17,7 @@ const checkIP = (request, response) => {
   const { ip } = request.params;
   pool.query('SELECT * FROM ip WHERE ip >>= $1', [ip], (error, results) => {
     if (error) {
-      throw error;
+      return response.status(400).send(error.message);
     }
     response.status(200).json(results.rows);
   });
