@@ -14,4 +14,8 @@ module.exports = {
   rules: {
     "comma-dangle": ["error", "never"]
   },
+  env: {
+    "node": true,
+    "mocha": true
+  }
 };
