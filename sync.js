@@ -6,9 +6,8 @@ const config = require('./config.json');
 const { filesDir } = config;
 
 fs.readdir(filesDir, (err, files) => {
-  console.log(`Directory read. Found ${files.length} files.`);
   files = files.filter(utils.isDataFile);
-  console.log(`Files filtered. There are ${files.length} ipset/netset files.`);
+  console.log(`Processing ${files.length} ipset/netset files...`);
   let ipArray = [];
   files.forEach((file) => {
     const data = fs.readFileSync(`./${filesDir}/${file}`, 'utf8');
@@ -18,21 +17,14 @@ fs.readdir(filesDir, (err, files) => {
     if (ips) {
       const temp = ips[0].split('\n');
       for (let i = 0; i < temp.length - 1; i++) {
-        const tmp = {'ip': temp[i], 'source': sourceStr};
+        const tmp = { 'ip': temp[i], 'source': sourceStr };
         ipArray.push(tmp);
       }
     }
   });
-  console.log(`ipArray.length = ${ipArray.length}`);
 
-  console.time('groupBy');
   const result = utils.groupBy(ipArray, item => [item.ip]);
-  console.timeEnd('groupBy');
-
-  console.time('mergeIPSources');
   const resultArray = utils.mergeIPSources(result, []);
-  console.timeEnd('mergeIPSources');
-
-  console.log(`Start importing ${resultArray.length} IPs`);
+  console.log(`Importing ${resultArray.length} IPs...`);
   db.syncData(resultArray);
 });

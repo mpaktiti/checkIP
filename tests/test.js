@@ -1,6 +1,6 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const deepEql = require("deep-eql");
+const deepEql = require('deep-eql');
 const app = require('../index');
 const utils = require('../validations');
 
@@ -9,7 +9,6 @@ chai.should();
 
 describe('IPs', () => {
   describe('GET /IP/:IP', () => {
-
     // Test to get a valid IP (host address)
     it('should get a valid IP object back (no subnet)', (done) => {
       chai.request(app)
@@ -17,7 +16,6 @@ describe('IPs', () => {
         .end((err, res) => {
           res.should.have.status(400);
           res.should.be.html;
-          //res.text.should.equal('OK');
           done();
         });
     });
@@ -29,7 +27,6 @@ describe('IPs', () => {
         .end((err, res) => {
           res.should.have.status(400);
           res.should.be.html;
-          //res.text.should.equal('OK');
           done();
         });
     });
