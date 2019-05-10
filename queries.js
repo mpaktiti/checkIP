@@ -1,4 +1,5 @@
 const { Pool } = require('pg');
+const format = require('pg-format');
 const config = require('./config.json');
 
 // Read connection parameters from config.json
@@ -9,8 +10,6 @@ const pool = new Pool({
   password: config.password,
   port: config.port
 });
-
-const now = new Date();
 
 const checkIP = (request, response) => {
   const { ip } = request.params;
@@ -28,18 +27,19 @@ const checkIP = (request, response) => {
 const syncData = (ipArray) => {
   (async () => {
     const client = await pool.connect();
-
+    const query = format('INSERT INTO ip_temp (ip, source) VALUES %L ON CONFLICT DO NOTHING', ipArray);
     try {
       await client.query('BEGIN');
-      await client.query('TRUNCATE ip_inet');
-      for (let i = 0; i < ipArray.length; i++) {
-        insertText = 'INSERT INTO ip_inet (ip, source, last_upd) VALUES ($1, $2, $3) ON CONFLICT DO NOTHING';
-        insertValues = [ipArray[i][0], ipArray[i][1], now];
-        await client.query(insertText, insertValues);
-      }
+      await client.query('CREATE TABLE ip_temp (LIKE ip INCLUDING ALL)');
+      await client.query('DROP INDEX ip_temp_ip_idx');
+      await client.query(query);
       await client.query('COMMIT');
       await client.query('TRUNCATE ip');
-      await client.query('INSERT INTO ip SELECT * from ip_inet');
+      await client.query('DROP INDEX idx_name');
+      await client.query('INSERT INTO ip SELECT * from ip_temp');
+      await client.query('CREATE INDEX idx_name ON ip USING GIST(ip inet_ops)');
+      await client.query('COMMIT');
+      await client.query('DROP TABLE ip_temp');
       await client.query('COMMIT');
     } catch (e) {
       await client.query('ROLLBACK');

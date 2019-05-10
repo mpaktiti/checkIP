@@ -7,7 +7,7 @@
     "start": "node index.js",
     "lint": "eslint .",
     "clone": "rm -rf blocklist-ipsets && git clone git@github.com:firehol/blocklist-ipsets.git",
-    "sync": "node sync",
+    "sync": "node --max-old-space-size=4096 sync",
     "test": "mocha tests/*.js --exit"
   },
   "keywords": [],
@@ -15,7 +15,8 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.4",
-    "pg": "^7.10.0"
+    "pg": "^7.10.0",
+    "pg-format": "^1.0.4"
   },
   "devDependencies": {
     "chai": "^4.2.0",
