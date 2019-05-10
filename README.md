@@ -32,7 +32,7 @@ SET default_with_oids = false;
 CREATE TABLE public.ip (
     ip inet NOT NULL,
     source character varying,
-    last_upd timestamp without time zone
+    last_upd timestamp without time zone DEFAULT CURRENT_TIMESTAMP
 );
 
 
@@ -47,29 +47,15 @@ ALTER TABLE ONLY public.ip
 
 
 --
+-- Name: idx_name; Type: INDEX; Schema: public; Owner: me
+--
+
+CREATE INDEX idx_name ON public.ip USING gist (ip inet_ops);
+
+
+--
 -- PostgreSQL database dump complete
 --
-```
-
-The `sync` operation uses a temp table, called `ip_inet`. I load the data there and then move them to the original `ip` table that the `/IP` endpoint uses.
-
-As a temporary workaround, create also that table, using the following script. If you don't the `sync` will fail as the first step is to truncate that table (I'll fix that).
-
-```sql
-CREATE TABLE public.ip_inet (
-    ip inet NOT NULL,
-    source character varying,
-    last_upd timestamp without time zone
-);
-
-ALTER TABLE public.ip_inet OWNER TO me;
-
---
--- Name: ip_inet ip_inet_pkey; Type: CONSTRAINT; Schema: public; Owner: me
---
-
-ALTER TABLE ONLY public.ip_inet
-    ADD CONSTRAINT ip_inet_pkey PRIMARY KEY (ip);
 ```
 
 ## Query for an IP
