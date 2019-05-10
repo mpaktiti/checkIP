@@ -7,7 +7,7 @@
     "start": "node index.js",
     "lint": "eslint .",
     "clone": "rm -rf blocklist-ipsets && git clone git@github.com:firehol/blocklist-ipsets.git",
-    "sync": "node --max-old-space-size=4096 sync",
+    "sync": "node sync",
     "test": "mocha tests/*.js --exit"
   },
   "keywords": [],
