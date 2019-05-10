@@ -14,7 +14,7 @@ describe('IPs', () => {
       chai.request(app)
         .get('/IP/1.162.150.226')
         .end((err, res) => {
-          res.should.have.status(400);
+          res.should.have.status(200);
           res.should.be.html;
           done();
         });
@@ -25,7 +25,7 @@ describe('IPs', () => {
       chai.request(app)
         .get('/IP/193.108.20.253')
         .end((err, res) => {
-          res.should.have.status(400);
+          res.should.have.status(200);
           res.should.be.html;
           done();
         });
